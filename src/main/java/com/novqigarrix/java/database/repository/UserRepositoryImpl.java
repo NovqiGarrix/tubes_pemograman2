@@ -46,6 +46,43 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+    @Override
+    public UserModel findByUsername(String username) throws SQLException {
+        String querySQL = "SELECT id_user, username, nama, password, role FROM user WHERE username = ?";
+
+        Connection connection = DatabaseUtil.getDataSource().getConnection();
+        PreparedStatement pr = connection.prepareStatement(querySQL);
+
+        try {
+            pr.setString(1, username);
+
+            ResultSet resultSet = pr.executeQuery();
+            connection.commit();
+
+            if(!resultSet.next()) {
+                return null;
+            }
+
+            UserModel userModel = new UserModel();
+
+            userModel.setUserId(resultSet.getInt(1));
+            userModel.setUsername(resultSet.getString(2));
+            userModel.setNama(resultSet.getString(3));
+            userModel.setPassword(resultSet.getString(4));
+            userModel.setRole(resultSet.getString(5));
+
+            return userModel;
+
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new SQLException(e);
+        } finally {
+            pr.close();
+            connection.close();
+        }
+
+    }
+
     public UserModel create(UserModel user) throws SQLException {
 
         String querySQL = "INSERT INTO user (username, nama, password, role) VALUES (?, ?, ?, ?)";

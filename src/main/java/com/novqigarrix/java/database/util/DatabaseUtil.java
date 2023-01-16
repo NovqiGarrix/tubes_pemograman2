@@ -3,9 +3,6 @@ package com.novqigarrix.java.database.util;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 public class DatabaseUtil {
 
     private static final HikariDataSource dataSource;

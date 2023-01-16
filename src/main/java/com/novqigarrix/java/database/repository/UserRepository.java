@@ -8,6 +8,8 @@ public interface UserRepository {
 
     UserModel findOne(int userId) throws SQLException;
 
+    UserModel findByUsername(String username) throws SQLException;
+
     UserModel create(UserModel user) throws SQLException;
 
     boolean delete(int userId) throws SQLException;
