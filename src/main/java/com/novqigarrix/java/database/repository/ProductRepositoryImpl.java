@@ -8,9 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 public class ProductRepositoryImpl implements ProductRepository {
-
 
     @Override
     public ProductModel[] findAll() throws SQLException {
