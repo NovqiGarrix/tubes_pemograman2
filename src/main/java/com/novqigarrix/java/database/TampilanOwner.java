@@ -9,13 +9,6 @@ import java.sql.SQLException;
 
 public class TampilanOwner extends JFrame {
 
-    // TODO: UnComment this when merging the code
-    static {
-        System.setProperty("JDBC_URL", "jdbc:mysql://localhost:3306/tubes_pemograman2_test");
-        System.setProperty("MYSQL_USERNAME", "root");
-        System.setProperty("MYSQL_PASSWORD", "mysql");
-    }
-
     private JPanel mainPanel;
     private JTable mainTable;
 
@@ -25,12 +18,6 @@ public class TampilanOwner extends JFrame {
         this.setContentPane(mainPanel);
         this.setSize(600, 400);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) {
-        JFrame frame  = new TampilanOwner();
-
-        frame.setVisible(true);
     }
 
     private void createUIComponents() {
