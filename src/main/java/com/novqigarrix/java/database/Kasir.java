@@ -31,13 +31,16 @@ public class Kasir extends JFrame{
     private Login tampilanLogin;
 
     private DefaultTableModel tabelModel;
-    private ProductRepositoryImpl productRepository;
-    private TransactionRepositoryImpl transactionRepository;
+    private DefaultTableModel kasirTabelModel;
+    private final ProductRepositoryImpl productRepository;
+    private final TransactionRepositoryImpl transactionRepository;
 
-    private Vector<ProductTransactionModel> productsVector;
+    private final Vector<ProductTransactionModel> productsVector;
 
-    public Kasir() {
+    public Kasir(DefaultTableModel tabelModel) {
         super("Tampilan Kasir");
+        this.tabelModel = tabelModel;
+
         this.setContentPane(panelMain);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(600,600);
@@ -154,7 +157,7 @@ public class Kasir extends JFrame{
                                 productTransactionModel.getQuantity()
                         };
 
-                        tabelModel.addRow(row);
+                        kasirTabelModel.addRow(row);
                         clearProdukForm();
 
                     } catch (NumberFormatException ex) {
@@ -258,6 +261,20 @@ public class Kasir extends JFrame{
                                 transactionRepository.create(transactionModel);
                                 System.out.println("Berhasil menyimpan transaksi dengan Id Produk: " + produk.getIdProduk());
 
+                                int terjual = transactionRepository.getTerjual(produk.getIdProduk());
+
+                                System.out.println("Update data produk di tabel model");
+                                Object[] row = {
+                                        produk.getIdProduk(),
+                                        produk.getNamaProduk(),
+                                        terjual,
+                                        productModel.getStok() - transactionModel.getQuantity(),
+                                        "Rp" + productModel.getHargaBeli(),
+                                        "Rp" + transactionModel.getHarga()
+                                };
+
+                                tabelModel.addRow(row);
+
                             } catch (SQLException ex) {
                                 System.out.println("Original Err Message: " + ex.getMessage());
                                 System.out.println("Gagal menyimpan data produk: " + produk.getNamaProduk());
@@ -276,8 +293,8 @@ public class Kasir extends JFrame{
 
                 clearProdukForm();
 
-                for (int i = tabelModel.getRowCount() - 1; i >= 0; i--) {
-                    tabelModel.removeRow(i);
+                for (int i = kasirTabelModel.getRowCount() - 1; i >= 0; i--) {
+                    kasirTabelModel.removeRow(i);
                 }
 
                 uangMasukField.setText("");
@@ -300,14 +317,14 @@ public class Kasir extends JFrame{
     private void createUIComponents() {
         // Load produk ke tabel
 
-        tabelModel = new DefaultTableModel();
+        kasirTabelModel = new DefaultTableModel();
 
-        tabelModel.addColumn("ID PRODUK");
-        tabelModel.addColumn("NAMA PRODUK");
-        tabelModel.addColumn("HARGA");
-        tabelModel.addColumn("QUANTITY");
+        kasirTabelModel.addColumn("ID PRODUK");
+        kasirTabelModel.addColumn("NAMA PRODUK");
+        kasirTabelModel.addColumn("HARGA");
+        kasirTabelModel.addColumn("QUANTITY");
 
-        tabelProduk = new JTable(tabelModel);
+        tabelProduk = new JTable(kasirTabelModel);
 
     }
 
@@ -319,6 +336,10 @@ public class Kasir extends JFrame{
 
     public void setTampilanLogin(Login tampilanLogin) {
         this.tampilanLogin = tampilanLogin;
+    }
+
+    public void setTabelModel(DefaultTableModel model) {
+        this.tabelModel = model;
     }
 
 }

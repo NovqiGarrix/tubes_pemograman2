@@ -2,6 +2,7 @@ package com.novqigarrix.java.database;
 
 import com.novqigarrix.java.database.util.EnvProperty;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.Objects;
 
 /**
@@ -19,14 +20,16 @@ public class App {
         System.setProperty("MYSQL_PASSWORD", Objects.requireNonNull(EnvProperty.getProperty("MYSQL_PASSWORD")));
     }
 
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
+
+        DefaultTableModel tabelModel = new DefaultTableModel();
 
         Login tampilanLogin = new Login();
         Register tampilanRegister = new Register();
 
-        Kasir tampilanKasir = new Kasir();
-        TampilanOwner tampilanOwner = new TampilanOwner();
+        Kasir tampilanKasir = new Kasir(tabelModel);
+        TampilanOwner tampilanOwner = new TampilanOwner(tabelModel);
 
         tampilanRegister.setTampilanLogin(tampilanLogin);
 

@@ -16,8 +16,11 @@ public class TampilanOwner extends JFrame {
     private JButton logoutButton;
     private Login tampilanLogin;
 
-    TampilanOwner() {
+    private DefaultTableModel tabelModel;
+
+    TampilanOwner(DefaultTableModel tabelModel) {
         super("Tampilan Owner");
+        this.tabelModel = tabelModel;
 
         this.setContentPane(mainPanel);
         this.setSize(600, 400);
@@ -38,39 +41,40 @@ public class TampilanOwner extends JFrame {
     }
 
     private void createUIComponents() {
-        DefaultTableModel model = new DefaultTableModel();
-
-        model.addColumn("ID PRODUK");
-        model.addColumn("NAMA PRODUK");
-        model.addColumn("TERJUAL");
-        model.addColumn("STOCK");
-        model.addColumn("HARGA BELI");
-        model.addColumn("HARGA JUAL");
+        tabelModel.addColumn("ID PRODUK");
+        tabelModel.addColumn("NAMA PRODUK");
+        tabelModel.addColumn("TERJUAL");
+        tabelModel.addColumn("STOCK");
+        tabelModel.addColumn("HARGA BELI");
+        tabelModel.addColumn("HARGA JUAL");
 
         TransactionRepositoryImpl repo = new TransactionRepositoryImpl();
 
         try {
 
             ProductTransactionModel[] dataTransaksi = repo.findAllProductAndTransactions();
-
             for (ProductTransactionModel data : dataTransaksi) {
                 Object[] row = {
                         data.getIdProduk(),
                         data.getNamaProduk(),
                         data.getTerjual(),
                         data.getStok(),
-                        "$" + data.getHargaBeli(),
-                        "$" + data.getHarga()
+                        "Rp" + data.getHargaBeli(),
+                        "Rp" + data.getHarga()
                 };
-                model.addRow(row);
+                tabelModel.addRow(row);
             }
 
-            mainTable = new JTable(model);
+            mainTable = new JTable(tabelModel);
 
         } catch (SQLException e) {
             System.out.println("Terjadi error saat mengambil data transaksi di database!");
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public void setTabelModel(DefaultTableModel model) {
+        this.tabelModel = model;
     }
 
     public void setTampilanLogin(Login tampilanLogin) {
