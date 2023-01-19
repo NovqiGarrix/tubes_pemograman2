@@ -1,5 +1,6 @@
 package com.novqigarrix.java.database;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.novqigarrix.java.database.model.UserModel;
 import com.novqigarrix.java.database.repository.UserRepositoryImpl;
 
@@ -90,15 +91,29 @@ public class Register extends JFrame {
             return;
         }
 
-        UserModel userModel = new UserModel();
-        userModel.setNama(nama);
-        userModel.setUsername(username);
-        userModel.setPassword(password);
-        userModel.setRole(role.toString());
-
         try {
 
             UserRepositoryImpl repository = new UserRepositoryImpl();
+
+            // Lakukan pengecheckan kalau user dengan username tersebut
+            // sudah ada atau belum
+            UserModel existedUser = repository.findByUsername(username);
+            if(existedUser != null){
+                JOptionPane.showMessageDialog(this,
+                        "Akun dengan username tersebut sudah terdaftar. Gunakan username lain!",
+                        "Error Message",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
+            UserModel userModel = new UserModel();
+            userModel.setNama(nama);
+            userModel.setUsername(username);
+            userModel.setPassword(hashedPassword);
+            userModel.setRole(role.toString());
+
             repository.create(userModel);
 
             JOptionPane.showMessageDialog(this,

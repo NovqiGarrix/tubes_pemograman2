@@ -1,5 +1,6 @@
 package com.novqigarrix.java.database;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.novqigarrix.java.database.model.UserModel;
 import com.novqigarrix.java.database.repository.UserRepositoryImpl;
 
@@ -84,9 +85,11 @@ public class Login extends JFrame {
                 return;
             }
 
+            BCrypt.Result passwordMatches = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
+
             // Bandingkan password yang dari input, dan yang ada di database
             // Jika tidak sama, maka password nya salah
-            if(!user.getPassword().equals(password)) {
+            if(!passwordMatches.verified) {
                 JOptionPane.showMessageDialog(this,
                         "Username atau Password anda salah!",
                         "Error Message",
