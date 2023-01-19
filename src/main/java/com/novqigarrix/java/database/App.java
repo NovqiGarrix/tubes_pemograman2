@@ -2,6 +2,7 @@ package com.novqigarrix.java.database;
 
 import com.novqigarrix.java.database.util.EnvProperty;
 
+import javax.swing.*;
 import java.util.Objects;
 
 /**
@@ -19,5 +20,6 @@ public class App {
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
+
     }
 }
