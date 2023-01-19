@@ -18,6 +18,7 @@ public class Login extends JFrame {
 
     private JFrame tampilanRegister;
     private TampilanOwner tampilanOwner;
+    private Kasir tampilanKasir;
 
     private void clearFields() {
         userTextField.setText("");
@@ -111,7 +112,7 @@ public class Login extends JFrame {
             this.setVisible(false);
 
             if(user.getRole().equals("KASIR")) {
-                System.out.println("Hello, World!!");
+                tampilanKasir.setVisible(true);
             } else if (user.getRole().equals("OWNER")) {
                 tampilanOwner.setVisible(true);
             }
@@ -129,6 +130,10 @@ public class Login extends JFrame {
 
     public void setTampilanOwner(TampilanOwner tampilanOwner) {
         this.tampilanOwner = tampilanOwner;
+    }
+
+    public void setTampilanKasir(Kasir tampilanKasir) {
+        this.tampilanKasir = tampilanKasir;
     }
 
 }

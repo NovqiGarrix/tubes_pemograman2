@@ -24,14 +24,18 @@ public class App {
 
         Login tampilanLogin = new Login();
         Register tampilanRegister = new Register();
+
+        Kasir tampilanKasir = new Kasir();
         TampilanOwner tampilanOwner = new TampilanOwner();
 
         tampilanRegister.setTampilanLogin(tampilanLogin);
 
-        tampilanLogin.setTampilanRegister(tampilanRegister);
         tampilanLogin.setTampilanOwner(tampilanOwner);
+        tampilanLogin.setTampilanKasir(tampilanKasir);
+        tampilanLogin.setTampilanRegister(tampilanRegister);
 
         tampilanOwner.setTampilanLogin(tampilanLogin);
+        tampilanKasir.setTampilanLogin(tampilanLogin);
 
         tampilanRegister.setVisible(true);
 
