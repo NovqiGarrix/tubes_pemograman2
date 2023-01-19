@@ -5,12 +5,16 @@ import com.novqigarrix.java.database.repository.TransactionRepositoryImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class TampilanOwner extends JFrame {
 
     private JPanel mainPanel;
     private JTable mainTable;
+    private JButton logoutButton;
+    private Login tampilanLogin;
 
     TampilanOwner() {
         super("Tampilan Owner");
@@ -18,6 +22,19 @@ public class TampilanOwner extends JFrame {
         this.setContentPane(mainPanel);
         this.setSize(600, 400);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        JFrame tampilanOwner = this;
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                tampilanOwner.setVisible(false);
+                tampilanLogin.setVisible(true);
+
+            }
+        });
+
     }
 
     private void createUIComponents() {
@@ -54,5 +71,9 @@ public class TampilanOwner extends JFrame {
             System.out.println("Terjadi error saat mengambil data transaksi di database!");
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public void setTampilanLogin(Login tampilanLogin) {
+        this.tampilanLogin = tampilanLogin;
     }
 }

@@ -8,77 +8,124 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class Login extends JFrame{
+public class Login extends JFrame {
     private JTextField userTextField;
     private JPasswordField passwordField;
     private JPanel mainPanel;
-    private JButton registerButton;
+    private JButton toRegisterButton;
     private JButton loginButton;
+
+    private JFrame tampilanRegister;
+    private TampilanOwner tampilanOwner;
+
+    private void clearFields() {
+        userTextField.setText("");
+        passwordField.setText("");
+    }
 
     public Login() {
         super("Create new Account");
         this.setContentPane(mainPanel);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(500, 400);
+
+        JFrame tampilanLogin = this;
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loginUser();
             }
         });
-        registerButton.addActionListener(new ActionListener() {
+
+        toRegisterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                loginUser();
+                tampilanLogin.setVisible(false);
+
+                // Clear fields nya
+                clearFields();
+
+                tampilanRegister.setVisible(true);
             }
         });
+
     }
 
-    private void loginUser(){
+    public void setTampilanRegister(JFrame tampilanRegister) {
+        this.tampilanRegister = tampilanRegister;
+    }
+
+    private void loginUser() {
         String username = userTextField.getText();
         String password = String.valueOf(passwordField.getPassword());
 
         if (username.isEmpty() || password.isEmpty()){
             JOptionPane.showMessageDialog(this,
-                    "Mohon Isi Form Login dengan benar !!",
-                    "Coba Lagi",
+                    "Mohon Isi Form Login dengan benar!",
+                    "Validasi Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (!password.equals(password)) {
+        try {
+
+            UserRepositoryImpl repository = new UserRepositoryImpl();
+            UserModel user = repository.findByUsername(username);
+
+            // Cari usernya melalui username
+            // kalau user nya tidak ada berarti
+            // user nya blm daftar
+            if(user == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Username atau Password anda salah!",
+                        "Error Message",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // Bandingkan password yang dari input, dan yang ada di database
+            // Jika tidak sama, maka password nya salah
+            if(!user.getPassword().equals(password)) {
+                JOptionPane.showMessageDialog(this,
+                        "Username atau Password anda salah!",
+                        "Error Message",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             JOptionPane.showMessageDialog(this,
-                    "Pastikan Password sesuai",
-                    "Coba Lagi",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+                    "Selamat datang " + user.getNama() + ". Anda Login sebagai " + user.getRole(),
+                    "Success Message",
+                    JOptionPane.INFORMATION_MESSAGE);
 
-        UserModel login = new UserModel();
-        login.setUsername(username);
-        login.setPassword(password);
+            // Jika user role nya kasir
+            // maka tampilkan tampilan kasir
+            // jika user role nya owner
+            // maka tampilkan tampilan owner
 
-        UserRepositoryImpl repository = new UserRepositoryImpl();
-        try{
-            repository.findOne(login.getUserId());
+            // Close dulu tampilan login nya
+            this.setVisible(false);
 
-        }catch (SQLException e){
+            if(user.getRole().equals("KASIR")) {
+                System.out.println("Hello, World!!");
+            } else if (user.getRole().equals("OWNER")) {
+                tampilanOwner.setVisible(true);
+            }
+
+            // Clear fields nya
+            clearFields();
+
+        } catch (SQLException e){
             JOptionPane.showMessageDialog(this,
                     e.getMessage(),
                     "Database Error",
                     JOptionPane.INFORMATION_MESSAGE);
         }
-
-        JOptionPane.showMessageDialog(this,
-                "Sukses !!",
-                "Selamat Datang  " + username,
-                JOptionPane.INFORMATION_MESSAGE);
-
-
     }
 
-    public static void main(String[] args) {
-        JFrame mainFrame = new Login();
-        mainFrame.setVisible(true);
+    public void setTampilanOwner(TampilanOwner tampilanOwner) {
+        this.tampilanOwner = tampilanOwner;
     }
+
 }

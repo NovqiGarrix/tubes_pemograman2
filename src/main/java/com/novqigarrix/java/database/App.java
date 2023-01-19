@@ -5,8 +5,11 @@ import com.novqigarrix.java.database.util.EnvProperty;
 import java.util.Objects;
 
 /**
- * Hello world!
- *
+ * Kelompok 1
+ * - Novri Anto | 21104065
+ * - Fauzaan Hafidz Amar D | 21104038
+ * - Tegar Dwi Leksono | 21104051
+ * - Septiandi Nugraha | 21104060
  */
 public class App {
 
@@ -19,10 +22,18 @@ public class App {
     public static void main( String[] args )
     {
 
+        Login tampilanLogin = new Login();
+        Register tampilanRegister = new Register();
         TampilanOwner tampilanOwner = new TampilanOwner();
 
+        tampilanRegister.setTampilanLogin(tampilanLogin);
 
+        tampilanLogin.setTampilanRegister(tampilanRegister);
+        tampilanLogin.setTampilanOwner(tampilanOwner);
 
+        tampilanOwner.setTampilanLogin(tampilanLogin);
+
+        tampilanRegister.setVisible(true);
 
     }
 }

@@ -16,6 +16,18 @@ public class Register extends JFrame {
     private JComboBox rolecomboBox;
     private JButton registerButton;
     private JPanel mainPannel;
+    private JButton toLoginButton;
+
+    private Login tampilanLogin;
+
+    private void clearFields() {
+        // Clear fields nya
+        namalengkapTextField.setText("");
+        userTextField.setText("");
+        passwordField1.setText("");
+        passwordField2.setText("");
+        rolecomboBox.setSelectedIndex(0);
+    }
 
     public Register() {
         super("Create new Account");
@@ -23,10 +35,26 @@ public class Register extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(500, 400);
 
+        JFrame tampilanRegister = this;
+
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registerUser();
+            }
+        });
+
+        toLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Close tampilan Register
+                tampilanRegister.setVisible(false);
+
+                // Clear fields nya
+                clearFields();
+
+                // Munculkan tampilan login
+                tampilanLogin.setVisible(true);
             }
         });
     }
@@ -35,55 +63,65 @@ public class Register extends JFrame {
         String nama = namalengkapTextField.getText();
         String username = userTextField.getText();
         String password = String.valueOf(passwordField1.getPassword());
-        String Conpassword = String.valueOf(passwordField2.getPassword());
-        String role = rolecomboBox.getSelectedItem().toString();
+        String confirmationPassword = String.valueOf(passwordField2.getPassword());
+        Object role = rolecomboBox.getSelectedItem();
 
-
-        if (nama.isEmpty() || username.isEmpty() || password.isEmpty() || Conpassword.isEmpty()) {
+        if (nama.isEmpty() || username.isEmpty() || password.isEmpty() || confirmationPassword.isEmpty() || role == null) {
             JOptionPane.showMessageDialog(this,
-                    "Mohon isi data diri dengan benar !!",
-                    "Coba Lagi",
+                    "Mohon isi data diri dengan benar!",
+                    "Validasi Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (!password.equals(Conpassword)) {
+        if(role.equals("Chose your Role")) {
+            JOptionPane.showMessageDialog(this,
+                    "Role tidak valid!",
+                    "Validasi Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmationPassword)) {
             JOptionPane.showMessageDialog(this,
                     "Pastikan Password sesuai",
-                    "Coba Lagi",
+                    "Validasi Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
+        UserModel userModel = new UserModel();
+        userModel.setNama(nama);
+        userModel.setUsername(username);
+        userModel.setPassword(password);
+        userModel.setRole(role.toString());
 
-        UserModel register = new UserModel();
-        register.setNama(nama);
-        register.setUsername(username);
-        register.setPassword(password);
-        register.setRole(role);
-
-        UserRepositoryImpl repository = new UserRepositoryImpl();
         try {
-            repository.create(register);
 
-        }catch (SQLException e){
+            UserRepositoryImpl repository = new UserRepositoryImpl();
+            repository.create(userModel);
+
+            JOptionPane.showMessageDialog(this,
+                    "Akun anda berhasil didaftar. Silahkan Login untuk Melanjutkan!",
+                    "Success Message",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            this.setVisible(false);
+            clearFields();
+
+            tampilanLogin.setVisible(true);
+
+        } catch (SQLException e){
             JOptionPane.showMessageDialog(this,
                     e.getMessage(),
                     "Database Error",
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
-        JOptionPane.showMessageDialog(this,
-                "Sukses !!",
-                "Akun terdaftar",
-                JOptionPane.INFORMATION_MESSAGE);
-
-
     }
 
-
-    public static void main(String[] args) {
-        JFrame mainFrame = new Register();
-        mainFrame.setVisible(true);
+    public void setTampilanLogin(Login tampilanLogin) {
+        this.tampilanLogin = tampilanLogin;
     }
+
 }
