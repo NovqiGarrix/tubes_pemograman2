@@ -43,7 +43,6 @@ public class TampilanOwner extends JFrame {
     private void createUIComponents() {
         tabelModel.addColumn("ID PRODUK");
         tabelModel.addColumn("NAMA PRODUK");
-        tabelModel.addColumn("TERJUAL");
         tabelModel.addColumn("STOCK");
         tabelModel.addColumn("HARGA BELI");
         tabelModel.addColumn("HARGA JUAL");
@@ -57,7 +56,6 @@ public class TampilanOwner extends JFrame {
                 Object[] row = {
                         data.getIdProduk(),
                         data.getNamaProduk(),
-                        data.getTerjual(),
                         data.getStok(),
                         "Rp" + data.getHargaBeli(),
                         "Rp" + data.getHarga()

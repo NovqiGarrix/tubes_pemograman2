@@ -12,8 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
-public class Kasir extends JFrame{
+public class Kasir extends JFrame {
     private JPanel panelMain;
     private JTabbedPane tabbedPane1;
     private JTextField idField;
@@ -242,12 +243,16 @@ public class Kasir extends JFrame{
                     return;
                 }
 
+                Semaphore semaphore = new Semaphore(productsVector.size());
+
                 for (ProductTransactionModel produk : productsVector) {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
 
                             try {
+
+                                semaphore.acquire();
 
                                 // Get data produk berdasarkan id produk
                                 ProductModel productModel = productRepository.findOne(produk.getIdProduk());
@@ -261,13 +266,9 @@ public class Kasir extends JFrame{
                                 transactionRepository.create(transactionModel);
                                 System.out.println("Berhasil menyimpan transaksi dengan Id Produk: " + produk.getIdProduk());
 
-                                int terjual = transactionRepository.getTerjual(produk.getIdProduk());
-
-                                System.out.println("Update data produk di tabel model");
                                 Object[] row = {
                                         produk.getIdProduk(),
                                         produk.getNamaProduk(),
-                                        terjual,
                                         productModel.getStok() - transactionModel.getQuantity(),
                                         "Rp" + productModel.getHargaBeli(),
                                         "Rp" + transactionModel.getHarga()
@@ -278,6 +279,11 @@ public class Kasir extends JFrame{
                             } catch (SQLException ex) {
                                 System.out.println("Original Err Message: " + ex.getMessage());
                                 System.out.println("Gagal menyimpan data produk: " + produk.getNamaProduk());
+                            } catch (InterruptedException ex) {
+                                System.out.println("Semaphore Gagal!!");
+                                System.out.println(ex.getMessage());
+                            } finally {
+                                semaphore.release();
                             }
 
                         }

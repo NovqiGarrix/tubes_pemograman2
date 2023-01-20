@@ -13,7 +13,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductModel[] findAll() throws SQLException {
 
-        String querySQL = "SELECT id_produk, nama_produk, stok, terjual, harga_beli, harga_jual FROM produk";
+        String querySQL = "SELECT id_produk, nama_produk, stok, harga_beli, harga_jual FROM produk";
 
         Connection connection = DatabaseUtil.getDataSource().getConnection();
         PreparedStatement pr = connection.prepareStatement(querySQL);
@@ -30,9 +30,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                 product.setIdProduk(rs.getString(1));
                 product.setNamaProduk(rs.getString(2));
                 product.setStok(rs.getInt(3));
-                product.setTerjual(rs.getInt(4));
-                product.setHargaBeli(rs.getInt(5));
-                product.setHargaJual(rs.getInt(6));
+                product.setHargaBeli(rs.getInt(4));
+                product.setHargaJual(rs.getInt(5));
 
                 products.add(product);
             }
@@ -58,7 +57,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductModel findOne(String idProduk) throws SQLException {
 
-        String querySQL = "SELECT id_produk, nama_produk, stok, terjual, harga_beli, harga_jual FROM produk WHERE id_produk = ?";
+        String querySQL = "SELECT id_produk, nama_produk, stok, harga_beli, harga_jual FROM produk WHERE id_produk = ?";
 
         Connection connection = DatabaseUtil.getDataSource().getConnection();
         PreparedStatement pr = connection.prepareStatement(querySQL);
@@ -79,9 +78,8 @@ public class ProductRepositoryImpl implements ProductRepository {
             productModel.setIdProduk(resultSet.getString(1));
             productModel.setNamaProduk(resultSet.getString(2));
             productModel.setStok(resultSet.getInt(3));
-            productModel.setTerjual(resultSet.getInt(4));
-            productModel.setHargaBeli(resultSet.getInt(5));
-            productModel.setHargaJual(resultSet.getInt(6));
+            productModel.setHargaBeli(resultSet.getInt(4));
+            productModel.setHargaJual(resultSet.getInt(5));
 
             return productModel;
 
@@ -98,7 +96,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductModel create(ProductModel product) throws SQLException {
 
-        String querySQL = "INSERT INTO produk (id_produk, nama_produk, stok, terjual, harga_beli, harga_jual) VALUES (?, ?, ?, ?, ?, ?)";
+        String querySQL = "INSERT INTO produk (id_produk, nama_produk, stok, harga_beli, harga_jual) VALUES (?, ?, ?, ?, ?, ?)";
 
         Connection connection = DatabaseUtil.getDataSource().getConnection();
         PreparedStatement pr = connection.prepareStatement(querySQL);
@@ -108,9 +106,8 @@ public class ProductRepositoryImpl implements ProductRepository {
             pr.setString(1, product.getIdProduk());
             pr.setString(2, product.getNamaProduk());
             pr.setInt(3, product.getStok());
-            pr.setInt(4, product.getTerjual());
-            pr.setLong(5, product.getHargaBeli());
-            pr.setLong(6, product.getHargaJual());
+            pr.setLong(4, product.getHargaBeli());
+            pr.setLong(5, product.getHargaJual());
 
             pr.execute();
             connection.commit();

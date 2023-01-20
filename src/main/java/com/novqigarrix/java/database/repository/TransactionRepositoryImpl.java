@@ -102,7 +102,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public ProductTransactionModel[] findAllProductAndTransactions() throws SQLException {
 
-        String querySQL = "SELECT p.id_produk, nama_produk, stok, terjual, harga_beli, harga, quantity FROM produk p\n" +
+        String querySQL = "SELECT p.id_produk, nama_produk, stok, harga_beli, harga, quantity FROM produk p\n" +
                 "JOIN transaksi t ON p.id_produk = t.id_produk;";
 
         Connection connection = DatabaseUtil.getDataSource().getConnection();
@@ -120,15 +120,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 ProductTransactionModel p = new ProductTransactionModel();
 
                 String idProduk = resultSet.getString(1);
-                int terjual = this.getTerjual(idProduk);
 
                 p.setIdProduk(idProduk);
                 p.setNamaProduk(resultSet.getString(2));
                 p.setStok(resultSet.getInt(3));
-                p.setTerjual(terjual);
-                p.setHargaBeli(resultSet.getInt(5));
-                p.setHarga(resultSet.getInt(6));
-                p.setQuantity(resultSet.getInt(7));
+                p.setHargaBeli(resultSet.getInt(4));
+                p.setHarga(resultSet.getInt(5));
+                p.setQuantity(resultSet.getInt(6));
 
                 vector.add(p);
 
@@ -141,35 +139,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             }
 
             return productTransactionModels;
-
-        } catch (SQLException e) {
-            connection.rollback();
-            throw new SQLException(e);
-        } finally {
-            pr.close();
-            connection.close();
-        }
-
-    }
-
-    @Override
-    public int getTerjual(String idProduk) throws SQLException {
-
-        String querySQL = "SELECT SUM(quantity) FROM transaksi WHERE id_produk = ? GROUP BY id_produk;";
-
-        Connection connection = DatabaseUtil.getDataSource().getConnection();
-        PreparedStatement pr = connection.prepareStatement(querySQL);
-
-        try {
-
-            pr.setString(1, idProduk);
-
-            ResultSet resultSet = pr.executeQuery();
-            connection.commit();
-
-            if(!resultSet.next()) return 0;
-
-            return resultSet.getInt(1);
 
         } catch (SQLException e) {
             connection.rollback();

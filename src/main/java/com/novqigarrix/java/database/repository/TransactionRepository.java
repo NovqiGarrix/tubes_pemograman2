@@ -15,8 +15,6 @@ public interface TransactionRepository {
 
     ProductTransactionModel[] findAllProductAndTransactions() throws SQLException;
 
-    int getTerjual(String idProduk) throws SQLException;
-
     void truncate() throws SQLException;
 
 }
