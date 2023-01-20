@@ -36,7 +36,6 @@ public class TransactionRepositoryTest {
         productModel.setIdProduk("P001");
         productModel.setNamaProduk("Intellij IDEA Ultimate");
         productModel.setStok(9999);
-        productModel.setTerjual(0);
         productModel.setHargaJual(30);
         productModel.setHargaBeli(50);
 
@@ -98,7 +97,6 @@ public class TransactionRepositoryTest {
             productModel.setIdProduk("P00" + i);
             productModel.setNamaProduk("Intellij IDEA Ultimate");
             productModel.setStok(99999);
-            productModel.setTerjual(i);
             productModel.setHargaJual(30 + i);
             productModel.setHargaBeli(50 + i);
 
@@ -155,7 +153,6 @@ public class TransactionRepositoryTest {
             productModel.setIdProduk("P00" + i);
             productModel.setNamaProduk("Intellij IDEA Ultimate");
             productModel.setStok(99999);
-            productModel.setTerjual(i);
             productModel.setHargaJual(30 + i);
             productModel.setHargaBeli(50 + i);
 
@@ -187,7 +184,6 @@ public class TransactionRepositoryTest {
 
             Assertions.assertEquals(pt.getIdProduk(), product.getIdProduk());
             Assertions.assertEquals(pt.getNamaProduk(), product.getNamaProduk());
-            Assertions.assertEquals(pt.getTerjual(), product.getTerjual());
             Assertions.assertEquals(pt.getHarga(), transaksi.getHarga());
             Assertions.assertEquals(pt.getQuantity(), transaksi.getQuantity());
         }

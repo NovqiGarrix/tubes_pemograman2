@@ -27,7 +27,6 @@ public class ProductRepositoryTest {
             productModel.setIdProduk("P00" + i);
             productModel.setNamaProduk("Intellij IDEA Ultimate");
             productModel.setStok(99999);
-            productModel.setTerjual(i);
             productModel.setHargaJual(30 + i);
             productModel.setHargaBeli(50 + i);
 
@@ -51,7 +50,6 @@ public class ProductRepositoryTest {
         productModel.setIdProduk("P001");
         productModel.setNamaProduk("Intellij IDEA Ultimate");
         productModel.setStok(99999);
-        productModel.setTerjual(0);
         productModel.setHargaJual(30);
         productModel.setHargaBeli(50);
 
@@ -60,7 +58,6 @@ public class ProductRepositoryTest {
         Assertions.assertEquals(createdProduct.getIdProduk(), productModel.getIdProduk());
         Assertions.assertEquals(createdProduct.getNamaProduk(), productModel.getNamaProduk());
         Assertions.assertEquals(createdProduct.getStok(), productModel.getStok());
-        Assertions.assertEquals(createdProduct.getTerjual(), productModel.getTerjual());
         Assertions.assertEquals(createdProduct.getHargaBeli(), productModel.getHargaBeli());
         Assertions.assertEquals(createdProduct.getHargaJual(), productModel.getHargaJual());
 
@@ -80,7 +77,6 @@ public class ProductRepositoryTest {
             productModel.setIdProduk("P00" + i);
             productModel.setNamaProduk("Intellij IDEA Ultimate" + i + 1);
             productModel.setStok(99999);
-            productModel.setTerjual(i);
             productModel.setHargaJual(30 + i);
             productModel.setHargaBeli(50 + i);
 
@@ -107,7 +103,6 @@ public class ProductRepositoryTest {
         productModel.setIdProduk("P001");
         productModel.setNamaProduk("Intellij IDEA Ultimate");
         productModel.setStok(99999);
-        productModel.setTerjual(0);
         productModel.setHargaJual(30);
         productModel.setHargaBeli(50);
 
@@ -118,7 +113,6 @@ public class ProductRepositoryTest {
         Assertions.assertEquals(createdProduct.getIdProduk(), foundProduct.getIdProduk());
         Assertions.assertEquals(createdProduct.getNamaProduk(), foundProduct.getNamaProduk());
         Assertions.assertEquals(createdProduct.getStok(), foundProduct.getStok());
-        Assertions.assertEquals(createdProduct.getTerjual(), foundProduct.getTerjual());
         Assertions.assertEquals(createdProduct.getHargaBeli(), foundProduct.getHargaBeli());
         Assertions.assertEquals(createdProduct.getHargaJual(), foundProduct.getHargaJual());
 
@@ -146,7 +140,6 @@ public class ProductRepositoryTest {
         productModel.setIdProduk("P001");
         productModel.setNamaProduk("Intellij IDEA Ultimate");
         productModel.setStok(99999);
-        productModel.setTerjual(0);
         productModel.setHargaJual(30);
         productModel.setHargaBeli(50);
 

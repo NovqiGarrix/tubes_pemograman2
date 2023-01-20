@@ -96,7 +96,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductModel create(ProductModel product) throws SQLException {
 
-        String querySQL = "INSERT INTO produk (id_produk, nama_produk, stok, harga_beli, harga_jual) VALUES (?, ?, ?, ?, ?, ?)";
+        String querySQL = "INSERT INTO produk (id_produk, nama_produk, stok, harga_beli, harga_jual) VALUES (?, ?, ?, ?, ?)";
 
         Connection connection = DatabaseUtil.getDataSource().getConnection();
         PreparedStatement pr = connection.prepareStatement(querySQL);
