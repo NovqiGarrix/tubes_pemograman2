@@ -2,73 +2,21 @@ package com.novqigarrix.java.database.model;
 
 public class ProductTransactionModel {
 
-    String idProduk;
+    private ProductModel product;
 
-    String namaProduk;
+    private TransactionModel transaction;
 
-    int stok;
-
-    int terjual;
-
-    int hargaBeli;
-
-    int harga;
-
-    int quantity;
-
-    public String getIdProduk() {
-        return idProduk;
+    public ProductTransactionModel(ProductModel product, TransactionModel transaction) {
+        this.product = product;
+        this.transaction = transaction;
     }
 
-    public void setIdProduk(String idProduk) {
-        this.idProduk = idProduk;
+    public ProductModel getProduct() {
+        return product;
     }
 
-    public String getNamaProduk() {
-        return namaProduk;
+    public TransactionModel getTransaction() {
+        return transaction;
     }
 
-    public void setNamaProduk(String namaProduk) {
-        this.namaProduk = namaProduk;
-    }
-
-    public int getStok() {
-        return stok;
-    }
-
-    public void setStok(int stok) {
-        this.stok = stok;
-    }
-
-    public int getTerjual() {
-        return terjual;
-    }
-
-    public void setTerjual(int terjual) {
-        this.terjual = terjual;
-    }
-
-    public int getHargaBeli() {
-        return hargaBeli;
-    }
-
-    public void setHargaBeli(int hargaBeli) {
-        this.hargaBeli = hargaBeli;
-    }
-
-    public int getHarga() {
-        return harga;
-    }
-
-    public void setHarga(int harga) {
-        this.harga = harga;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

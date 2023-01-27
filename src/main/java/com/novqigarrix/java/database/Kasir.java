@@ -142,20 +142,19 @@ public class Kasir extends JFrame {
                         // harga jual * quantiy = total harga sesuai quantity
                         int totalHarga = produk.getHargaJual() * quantity;
 
-                        ProductTransactionModel productTransactionModel = new ProductTransactionModel();
-                        productTransactionModel.setIdProduk(produk.getIdProduk());
-                        productTransactionModel.setHarga(produk.getHargaJual());
-                        productTransactionModel.setQuantity(quantity);
-                        productTransactionModel.setNamaProduk(produk.getNamaProduk());
-                        productTransactionModel.setHarga(totalHarga);
+                        TransactionModel transactionModel = new TransactionModel();
+                        transactionModel.setIdProduk(produk.getIdProduk());
+                        transactionModel.setQuantity(quantity);
+                        transactionModel.setHarga(produk.getHargaJual());
 
+                        ProductTransactionModel productTransactionModel = new ProductTransactionModel(produk, transactionModel);
                         productsVector.add(productTransactionModel);
 
                         Object[] row = {
-                                productTransactionModel.getIdProduk(),
-                                productTransactionModel.getNamaProduk(),
-                                "Rp" + productTransactionModel.getHarga(),
-                                productTransactionModel.getQuantity()
+                                productTransactionModel.getProduct().getIdProduk(),
+                                productTransactionModel.getProduct().getNamaProduk(),
+                                "Rp" + productTransactionModel.getTransaction().getHarga(),
+                                productTransactionModel.getTransaction().getQuantity()
                         };
 
                         kasirTabelModel.addRow(row);
@@ -196,7 +195,7 @@ public class Kasir extends JFrame {
                 int totalHargaSemuaProduk = 0;
 
                 for (ProductTransactionModel produk : productsVector) {
-                    totalHargaSemuaProduk += produk.getHarga();
+                    totalHargaSemuaProduk += produk.getTransaction().getHarga();
                 }
 
                 int totalKembalian = uangMasuk - totalHargaSemuaProduk;
@@ -231,7 +230,7 @@ public class Kasir extends JFrame {
                 int totalHargaSemuaProduk = 0;
 
                 for (ProductTransactionModel produk : productsVector) {
-                    totalHargaSemuaProduk += produk.getHarga();
+                    totalHargaSemuaProduk += produk.getTransaction().getHarga();
                 }
 
                 int totalKembalian = uangMasuk - totalHargaSemuaProduk;
@@ -255,20 +254,20 @@ public class Kasir extends JFrame {
                                 semaphore.acquire();
 
                                 // Get data produk berdasarkan id produk
-                                ProductModel productModel = productRepository.findOne(produk.getIdProduk());
+                                ProductModel productModel = productRepository.findOne(produk.getProduct().getIdProduk());
                                 if(productModel == null) return;
 
                                 TransactionModel transactionModel = new TransactionModel();
                                 transactionModel.setIdProduk(productModel.getIdProduk());
-                                transactionModel.setQuantity(produk.getQuantity());
+                                transactionModel.setQuantity(produk.getTransaction().getQuantity());
                                 transactionModel.setHarga(productModel.getHargaJual());
 
                                 transactionRepository.create(transactionModel);
-                                System.out.println("Berhasil menyimpan transaksi dengan Id Produk: " + produk.getIdProduk());
+                                System.out.println("Berhasil menyimpan transaksi dengan Id Produk: " + produk.getProduct().getIdProduk());
 
                                 Object[] row = {
-                                        produk.getIdProduk(),
-                                        produk.getNamaProduk(),
+                                        produk.getProduct().getIdProduk(),
+                                        produk.getProduct().getNamaProduk(),
                                         productModel.getStok() - transactionModel.getQuantity(),
                                         "Rp" + productModel.getHargaBeli(),
                                         "Rp" + transactionModel.getHarga()
@@ -278,7 +277,7 @@ public class Kasir extends JFrame {
 
                             } catch (SQLException ex) {
                                 System.out.println("Original Err Message: " + ex.getMessage());
-                                System.out.println("Gagal menyimpan data produk: " + produk.getNamaProduk());
+                                System.out.println("Gagal menyimpan data produk: " + produk.getProduct().getNamaProduk());
                             } catch (InterruptedException ex) {
                                 System.out.println("Semaphore Gagal!!");
                                 System.out.println(ex.getMessage());

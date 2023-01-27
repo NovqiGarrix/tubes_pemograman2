@@ -7,10 +7,10 @@ import java.util.Objects;
 
 /**
  * Kelompok 1
- * - Novri Anto | 21104065
  * - Fauzaan Hafidz Amar D | 21104038
  * - Tegar Dwi Leksono | 21104051
  * - Septiandi Nugraha | 21104060
+ * - Novri Anto | 21104065
  */
 public class App {
 

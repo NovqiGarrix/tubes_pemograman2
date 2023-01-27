@@ -54,11 +54,11 @@ public class TampilanOwner extends JFrame {
             ProductTransactionModel[] dataTransaksi = repo.findAllProductAndTransactions();
             for (ProductTransactionModel data : dataTransaksi) {
                 Object[] row = {
-                        data.getIdProduk(),
-                        data.getNamaProduk(),
-                        data.getStok(),
-                        "Rp" + data.getHargaBeli(),
-                        "Rp" + data.getHarga()
+                        data.getProduct().getIdProduk(),
+                        data.getProduct().getNamaProduk(),
+                        data.getProduct().getStok(),
+                        "Rp" + data.getProduct().getHargaBeli(),
+                        "Rp" + data.getTransaction().getHarga()
                 };
                 tabelModel.addRow(row);
             }

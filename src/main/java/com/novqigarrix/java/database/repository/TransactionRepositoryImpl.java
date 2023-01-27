@@ -1,5 +1,6 @@
 package com.novqigarrix.java.database.repository;
 
+import com.novqigarrix.java.database.model.ProductModel;
 import com.novqigarrix.java.database.model.ProductTransactionModel;
 import com.novqigarrix.java.database.model.TransactionModel;
 import com.novqigarrix.java.database.util.DatabaseUtil;
@@ -117,17 +118,20 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
             while (resultSet.next()) {
 
-                ProductTransactionModel p = new ProductTransactionModel();
+                ProductModel productModel = new ProductModel();
+                productModel.setIdProduk(resultSet.getString(1));
+                productModel.setNamaProduk(resultSet.getString(2));
+                productModel.setStok(resultSet.getInt(3));
+                productModel.setHargaBeli(resultSet.getInt(4));
+                productModel.setHargaJual(resultSet.getInt(5));
 
-                String idProduk = resultSet.getString(1);
+                TransactionModel transactionModel = new TransactionModel();
+                transactionModel.setIdProduk(productModel.getIdProduk());
+                transactionModel.setQuantity(resultSet.getInt(6));
+                transactionModel.setHarga(resultSet.getInt(5));
 
-                p.setIdProduk(idProduk);
-                p.setNamaProduk(resultSet.getString(2));
-                p.setStok(resultSet.getInt(3));
-                p.setHargaBeli(resultSet.getInt(4));
-                p.setHarga(resultSet.getInt(5));
-                p.setQuantity(resultSet.getInt(6));
 
+                ProductTransactionModel p = new ProductTransactionModel(productModel, transactionModel);
                 vector.add(p);
 
             }
